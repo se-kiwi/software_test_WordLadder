@@ -22,7 +22,6 @@ public class WordLadder {
 
     public static void main(String[] args) {
         WordLadder wl = new WordLadder();
-//        wl.run();
         if (wl.createLadder("kwyjibo", "fluxbar")) {
             System.out.println("OK");
         }
@@ -164,14 +163,14 @@ public class WordLadder {
                 System.out.println("Have a nice day.");
                 return false;
             }
-            first = changeFormat(first);
+            first = first.toLowerCase();
             System.out.print("Word #2 (or Enter to quit): ");
             last = scanner.nextLine();
             if (last.equals("")) {
                 System.out.println("Have a nice day.\n");
                 return false;
             }
-            last = changeFormat(last);
+            last = last.toLowerCase();
 
             same_len = first.length() == last.length();
 
@@ -214,8 +213,6 @@ public class WordLadder {
         for (String word : endWords) {
             if (word.equals(first)) {
                 first_stack.push(last);
-//                ladders = first_stack;
-//                ladders = (Stack<String>) first_stack.clone();
                 ladders = new Stack<>();
                 ladders.addAll(first_stack);
                 return true;
@@ -231,8 +228,6 @@ public class WordLadder {
 
             getNeighbourWords(head_stack.peek());
             for (String s : neighbourWords) {
-//                new_tail_stack = head_stack;
-//                new_tail_stack.clear();
                 new_tail_stack = new Stack<>();
                 new_tail_stack.addAll(head_stack);
 
@@ -240,7 +235,6 @@ public class WordLadder {
                     new_tail_stack.push(s);
                     if (endWords.contains(s)) {  // if matched successfully // lllllllllllllllllllllllllllllllll
                         new_tail_stack.push(last);
-//                        ladders = new_tail_stack;
                         ladders.clear();
                         ladders.addAll(new_tail_stack);
                         return true;
@@ -250,7 +244,6 @@ public class WordLadder {
                     reachedWords.add(s);
                 }
             }
-//            words_queue.pop();
             words_queue.removeLast();
         }
         ladders = null;
@@ -294,13 +287,6 @@ public class WordLadder {
                     neighbourWords.add(changed_word.toString());
             }
         }
-    }
-
-    private String changeFormat(String s) {
-//        for (int i = 0; i < s.length(); i++)
-//            if (s[i] >= 'A'&& s[i] <= 'Z') s[i] += 32;
-        return s.toLowerCase();
-
     }
 
     private Boolean isInDictionary(String s) {
