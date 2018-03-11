@@ -1,3 +1,9 @@
+package com.yfzm;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class WordLadder {
@@ -16,7 +22,98 @@ public class WordLadder {
 
     public static void main(String[] args) {
         WordLadder wl = new WordLadder();
+//        wl.run();
+        if (wl.createLadder("kwyjibo", "fluxbar")) {
+            System.out.println("OK");
+        }
+        System.out.println(wl.getLadderStep());
+
         wl.run();
+    }
+
+    public WordLadder() {
+        dictionary = new HashSet<>();
+        neighbourWords = new HashSet<>();
+        reachedWords = new HashSet<>();
+
+        ladders = new Stack<>();
+        endWords = new HashSet<>();
+        words_queue = new ArrayDeque<>();
+
+        setDictionary();
+    }
+
+    public boolean createLadder(String firstString, String lastString) {
+        clear();
+
+        firstString = firstString.toLowerCase();
+        lastString = lastString.toLowerCase();
+
+        if (firstString.equals("") || lastString.equals("")) {
+            System.out.println("The word can't be void.");
+            return false;
+        }
+
+        if (firstString.equals(lastString)) {
+            System.out.println("The two words must be different.");
+            return false;
+        }
+
+        first = firstString;
+        last = lastString;
+
+        initWords();
+        setEndWords();
+
+        return findLadder();
+    }
+
+    public int getLadderStep() {
+        if (ladders == null) {
+            return 0;
+        } else {
+            return ladders.size();
+        }
+    }
+
+    public Stack<String> getLadderStack() {
+        if (ladders == null) {
+            return null;
+        }
+
+        Stack<String> ret_stack = new Stack<>();
+
+        if (!is_reverse) {
+            ret_stack.addAll(ladders);
+        }
+        else {
+            Stack<String> result = new Stack<>();
+            while (!ladders.empty()) {
+                result.push(ladders.pop());
+            }
+            ret_stack.addAll(result);
+        }
+
+        return ret_stack;
+    }
+
+    private void initWords() {
+        same_len = first.length() == last.length();
+
+        is_reverse = false;
+        getNeighbourWords(first);
+        int nFirst = neighbourWords.size();
+        getNeighbourWords(last);
+        int nLast = neighbourWords.size();
+        if (nFirst > nLast) {
+            String temp = first;
+            first = last;
+            last = temp;
+            is_reverse = true;
+        }
+
+        // put the first string into dictionary. It works when the first and the last words are both out of dictionary.
+        dictionary.add(first);
     }
 
     public void run() {
@@ -35,12 +132,24 @@ public class WordLadder {
     }
 
     private void setDictionary() {
+        InputStream in = WordLadder.class.getClassLoader().getResourceAsStream("dictionary.txt");
+//        InputStream in = WordLadder.class.getClassLoader().getResourceAsStream("smalldict1.txt");
+        InputStreamReader reader = new InputStreamReader(in);
+        BufferedReader br = new BufferedReader(reader);
+        String line;
+        try {
+            while ((line = br.readLine()) != null) {
+                dictionary.add(line.trim());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
     private void clear() {
         reachedWords.clear();
-        ladders.clear();
+        ladders = new Stack<>();
         words_queue.clear();
     }
 
@@ -66,8 +175,6 @@ public class WordLadder {
 
             same_len = first.length() == last.length();
 
-            // added on May 19th: if the number of first word's neighbour words is more than that of the last word, change the search order.
-            // also see at [added features 3]
             is_reverse = false;
             getNeighbourWords(first);
             int nFirst = neighbourWords.size();
@@ -95,7 +202,9 @@ public class WordLadder {
 
     private void setEndWords() {
         getNeighbourWords(last);
-        endWords = neighbourWords;
+//        endWords = neighbourWords;
+        endWords.clear();
+        endWords.addAll(neighbourWords);
     }
 
     private Boolean findLadder() {
@@ -105,7 +214,10 @@ public class WordLadder {
         for (String word : endWords) {
             if (word.equals(first)) {
                 first_stack.push(last);
-                ladders = first_stack;
+//                ladders = first_stack;
+//                ladders = (Stack<String>) first_stack.clone();
+                ladders = new Stack<>();
+                ladders.addAll(first_stack);
                 return true;
             }
         }
@@ -114,17 +226,23 @@ public class WordLadder {
         reachedWords.add(first);  // mark the first word to avoid being used later
 
         while (!words_queue.isEmpty()) {
-            Stack<String> head_stack = words_queue.getFirst();  // use reference to improve performance
+            Stack<String> head_stack = words_queue.getLast();  // use reference to improve performance
             Stack<String> new_tail_stack;  // a new stack that will append to the end of the queue
 
             getNeighbourWords(head_stack.peek());
             for (String s : neighbourWords) {
-                new_tail_stack = head_stack;
+//                new_tail_stack = head_stack;
+//                new_tail_stack.clear();
+                new_tail_stack = new Stack<>();
+                new_tail_stack.addAll(head_stack);
+
                 if (!isReached(s)) {
                     new_tail_stack.push(s);
                     if (endWords.contains(s)) {  // if matched successfully // lllllllllllllllllllllllllllllllll
                         new_tail_stack.push(last);
-                        ladders = new_tail_stack;
+//                        ladders = new_tail_stack;
+                        ladders.clear();
+                        ladders.addAll(new_tail_stack);
                         return true;
                     }
 
@@ -132,8 +250,10 @@ public class WordLadder {
                     reachedWords.add(s);
                 }
             }
-            words_queue.pop();
+//            words_queue.pop();
+            words_queue.removeLast();
         }
+        ladders = null;
         return false;
 
     }
