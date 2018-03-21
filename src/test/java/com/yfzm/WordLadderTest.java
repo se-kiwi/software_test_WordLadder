@@ -1,4 +1,4 @@
-package com.yfzm;
+package com.yfzm.demo;
 
 import org.junit.Test;
 

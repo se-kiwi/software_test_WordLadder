@@ -1,9 +1,9 @@
 package com.yfzm;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+
+import java.io.*;
 import java.util.*;
 
 public class WordLadder {
@@ -131,18 +131,26 @@ public class WordLadder {
     }
 
     private void setDictionary() {
-        InputStream in = WordLadder.class.getClassLoader().getResourceAsStream("dictionary.txt");
+//        InputStream in = WordLadder.class.getClassLoader().getResourceAsStream("dictionary.txt");
 //        InputStream in = WordLadder.class.getClassLoader().getResourceAsStream("smalldict1.txt");
-        InputStreamReader reader = new InputStreamReader(in);
-        BufferedReader br = new BufferedReader(reader);
-        String line;
+        FileInputStream in = null;
         try {
+            Resource resource = new ClassPathResource("dictionary.txt");
+            File file = resource.getFile();
+            in = new FileInputStream(file);
+            InputStreamReader reader = new InputStreamReader(in);
+            BufferedReader br = new BufferedReader(reader);
+
+            String line;
             while ((line = br.readLine()) != null) {
                 dictionary.add(line.trim());
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+//        InputStream in = WordLadder.class.getResourceAsStream("dictionary.txt");
 
     }
 
