@@ -9,6 +9,16 @@ public class LadderBean {
     private int length;
     private List<String> ladder;
 
+    public LadderBean() {
+    }
+
+    public LadderBean(String begin, String end, int length, List<String> ladder) {
+        this.begin = begin;
+        this.end = end;
+        this.length = length;
+        this.ladder = ladder;
+    }
+
     public String getBegin() {
         return begin;
     }
