@@ -20,15 +20,6 @@ public class WordLadder {
     private Boolean same_len;
     private Boolean is_reverse;
 
-    public static void main(String[] args) {
-        WordLadder wl = new WordLadder();
-        if (wl.createLadder("kwyjibo", "fluxbar")) {
-            System.out.println("OK");
-        }
-        System.out.println(wl.getLadderStep());
-
-        wl.run();
-    }
 
     public WordLadder() {
         dictionary = new HashSet<>();
@@ -115,20 +106,20 @@ public class WordLadder {
         dictionary.add(first);
     }
 
-    public void run() {
-        setDictionary();
-        while (true) {
-            clear();
-            // only when the input is '\n', function setWords will return false
-            if (setWords()) {
-                setEndWords();  // added.
-                // the function "findLadder" will search for the ladder, then the function "outputLadder" print the result
-                outputLadder(findLadder());
-            }
-            else
-                break;
-        }
-    }
+//    public void run() {
+//        setDictionary();
+//        while (true) {
+//            clear();
+//            // only when the input is '\n', function setWords will return false
+//            if (setWords()) {
+//                setEndWords();  // added.
+//                // the function "findLadder" will search for the ladder, then the function "outputLadder" print the result
+//                outputLadder(findLadder());
+//            }
+//            else
+//                break;
+//        }
+//    }
 
     private void setDictionary() {
 //        InputStream in = WordLadder.class.getClassLoader().getResourceAsStream("dictionary.txt");
@@ -160,52 +151,50 @@ public class WordLadder {
         words_queue.clear();
     }
 
-    private Boolean setWords() {
-        Scanner scanner = new Scanner(System.in);
-        while (true)
-        {
-            System.out.println();
-            System.out.print("Word #1 (or Enter to quit): ");
-            first = scanner.nextLine();
-            if (first.equals("")) {
-                System.out.println("Have a nice day.");
-                return false;
-            }
-            first = first.toLowerCase();
-            System.out.print("Word #2 (or Enter to quit): ");
-            last = scanner.nextLine();
-            if (last.equals("")) {
-                System.out.println("Have a nice day.\n");
-                return false;
-            }
-            last = last.toLowerCase();
-
-            same_len = first.length() == last.length();
-
-            is_reverse = false;
-            getNeighbourWords(first);
-            int nFirst = neighbourWords.size();
-            getNeighbourWords(last);
-            int nLast = neighbourWords.size();
-            if (nFirst > nLast) {
-                String temp = first;
-                first = last;
-                last = temp;
-                is_reverse = true;
-            }
-
-            // put the first string into dictionary. It works when the first and the last words are both out of dictionary.
-            dictionary.add(first);
-
-		/*if (!isInDictionary(first) || !isInDictionary(last))
-			cerr << "The two words must be found in the dictionary." << endl;
-		else */if (first.equals(last))
-            System.out.println("The two words must be different.");
-        else
-            break;
-        }
-        return true;
-    }
+//    private Boolean setWords() {
+//        Scanner scanner = new Scanner(System.in);
+//        while (true)
+//        {
+//            System.out.println();
+//            System.out.print("Word #1 (or Enter to quit): ");
+//            first = scanner.nextLine();
+//            if (first.equals("")) {
+//                System.out.println("Have a nice day.");
+//                return false;
+//            }
+//            first = first.toLowerCase();
+//            System.out.print("Word #2 (or Enter to quit): ");
+//            last = scanner.nextLine();
+//            if (last.equals("")) {
+//                System.out.println("Have a nice day.\n");
+//                return false;
+//            }
+//            last = last.toLowerCase();
+//
+//            same_len = first.length() == last.length();
+//
+//            is_reverse = false;
+//            getNeighbourWords(first);
+//            int nFirst = neighbourWords.size();
+//            getNeighbourWords(last);
+//            int nLast = neighbourWords.size();
+//            if (nFirst > nLast) {
+//                String temp = first;
+//                first = last;
+//                last = temp;
+//                is_reverse = true;
+//            }
+//
+//            // put the first string into dictionary. It works when the first and the last words are both out of dictionary.
+//            dictionary.add(first);
+//
+//		if (first.equals(last))
+//            System.out.println("The two words must be different.");
+//        else
+//            break;
+//        }
+//        return true;
+//    }
 
     private void setEndWords() {
         getNeighbourWords(last);
@@ -301,35 +290,35 @@ public class WordLadder {
         return dictionary.contains(s);
     }
 
-    private void outputLadder(Boolean isFound) {
-        // if the ladder is NOT found
-        if (!isFound) {
-            if(!is_reverse)
-                System.out.println("No word ladder found from " + last + " back to " + first + ".");
-            else
-                System.out.println("No word ladder found from " + first + " back to " + last + ".");
-            return;
-        }
-
-        // if the ladder has been found
-        if (!is_reverse) {
-            System.out.println("A ladder from " + last + " back to " + first + ":");
-            while (!ladders.empty()) {
-                System.out.print(ladders.pop() + " ");
-            }
-            System.out.println();
-        }
-        else {
-            System.out.println("A ladder from " + first + " back to " + last + ":");
-            Stack<String> result = new Stack<>();
-            while (!ladders.empty()) {
-                result.push(ladders.pop());
-            }
-            while (!result.empty()) {
-                System.out.print(result.pop() + " ");
-            }
-            System.out.println();
-        }
-    }
+//    private void outputLadder(Boolean isFound) {
+//        // if the ladder is NOT found
+//        if (!isFound) {
+//            if(!is_reverse)
+//                System.out.println("No word ladder found from " + last + " back to " + first + ".");
+//            else
+//                System.out.println("No word ladder found from " + first + " back to " + last + ".");
+//            return;
+//        }
+//
+//        // if the ladder has been found
+//        if (!is_reverse) {
+//            System.out.println("A ladder from " + last + " back to " + first + ":");
+//            while (!ladders.empty()) {
+//                System.out.print(ladders.pop() + " ");
+//            }
+//            System.out.println();
+//        }
+//        else {
+//            System.out.println("A ladder from " + first + " back to " + last + ":");
+//            Stack<String> result = new Stack<>();
+//            while (!ladders.empty()) {
+//                result.push(ladders.pop());
+//            }
+//            while (!result.empty()) {
+//                System.out.print(result.pop() + " ");
+//            }
+//            System.out.println();
+//        }
+//    }
 
 }
