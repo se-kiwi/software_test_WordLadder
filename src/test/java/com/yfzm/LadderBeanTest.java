@@ -3,6 +3,7 @@ package com.yfzm;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -11,7 +12,18 @@ public class LadderBeanTest {
 
     private LadderBean null_bean;
     private LadderBean full_bean;
-    ArrayList<String> list;
+    private ArrayList<String> list;
+
+    private static Object getValue(Object obj, String fieldName) {
+
+        try {
+            Field field = obj.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return field.get(obj);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -33,7 +45,7 @@ public class LadderBeanTest {
     @Test
     public void setBegin() {
         null_bean.setBegin("testbegin");
-        assertEquals("testbegin", null_bean.getBegin());
+        assertEquals("testbegin", getValue(null_bean, "begin"));
     }
 
     @Test
@@ -44,7 +56,7 @@ public class LadderBeanTest {
     @Test
     public void setEnd() {
         null_bean.setEnd("testend");
-        assertEquals("testend", null_bean.getEnd());
+        assertEquals("testend", getValue(null_bean, "end"));
     }
 
     @Test
@@ -55,7 +67,7 @@ public class LadderBeanTest {
     @Test
     public void setLength() {
         null_bean.setLength(5);
-        assertEquals(5, null_bean.getLength());
+        assertEquals(5, getValue(null_bean, "length"));
     }
 
     @Test
@@ -66,6 +78,6 @@ public class LadderBeanTest {
     @Test
     public void setLadder() {
         null_bean.setLadder(list);
-        assertEquals(list, null_bean.getLadder());
+        assertEquals(list, getValue(null_bean, "ladder"));
     }
 }
