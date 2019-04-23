@@ -13,4 +13,10 @@ public class DemoApplicationTests {
 	public void contextLoads() {
 	}
 
+	@Test
+    public void mainTest(){
+	    String[] arg = {""};
+	    DemoApplication.main(arg);
+    }
+
 }
