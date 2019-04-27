@@ -66,10 +66,9 @@ public class WordLadder {
     }
 
     public Stack<String> getLadderStack() {
-        if (ladders == null) {
-            return null;
-        }
-
+//        if (ladders == null) {
+//            return null;
+//        }
         Stack<String> ret_stack = new Stack<>();
 
         if (!is_reverse) {
@@ -104,26 +103,24 @@ public class WordLadder {
         dictionary.add(first);
     }
 
-
     private void setDictionary() {
-//        InputStream in = WordLadder.class.getClassLoader().getResourceAsStream("dictionary.txt");
-//        InputStream in = WordLadder.class.getClassLoader().getResourceAsStream("smalldict1.txt");
-        FileInputStream in = null;
-        try {
-            Resource resource = new ClassPathResource("dictionary.txt");
-            File file = resource.getFile();
-            in = new FileInputStream(file);
-            InputStreamReader reader = new InputStreamReader(in);
-            BufferedReader br = new BufferedReader(reader);
-
-            String line;
-            while ((line = br.readLine()) != null) {
-                dictionary.add(line.trim());
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        dictionary = DictionaryReader.getDictioary();
+//        FileInputStream in = null;
+//        try {
+//            Resource resource = new ClassPathResource("dictionary.txt");
+//            File file = resource.getFile();
+//            in = new FileInputStream(file);
+//            InputStreamReader reader = new InputStreamReader(in);
+//            BufferedReader br = new BufferedReader(reader);
+//
+//            String line;
+//            while ((line = br.readLine()) != null) {
+//                dictionary.add(line.trim());
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
 //        InputStream in = WordLadder.class.getResourceAsStream("dictionary.txt");
 

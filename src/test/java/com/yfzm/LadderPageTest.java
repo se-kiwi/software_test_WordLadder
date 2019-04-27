@@ -40,13 +40,12 @@ public class LadderPageTest {
     public void tearDown() throws Exception {
     }
 
-    @Test
-    public void func() throws Exception{
+    public void testController(String begin, String end, int expectLength) throws Exception {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 //form表单格式传参
-                .param("begin", "cat")
-                .param("end", "dog")
+                .param("begin", begin)
+                .param("end", end)
                 .characterEncoding("utf-8")
                 .accept(MediaType.APPLICATION_JSON_UTF8_VALUE);
 
@@ -60,10 +59,16 @@ public class LadderPageTest {
 
         Gson gson = new Gson();
         LadderBean res_bean = gson.fromJson(jsonStr, LadderBean.class);
-        assertEquals("cat", res_bean.getBegin());
-        assertEquals("dog", res_bean.getEnd());
-        assertEquals(4, res_bean.getLength());
+        assertEquals(begin, res_bean.getBegin());
+        assertEquals(end, res_bean.getEnd());
+        assertEquals(expectLength, res_bean.getLength());
+    }
 
-//        System.out.println("response------------------:"+mvcResult.getResponse().getContentAsString());
+    @Test
+    public void func() throws Exception {
+        testController("cat", "dog", 4);
+        // test is_reverse
+        testController("car", "banana", 6);
+        testController("uuuu", "dddd", 0);
     }
 }

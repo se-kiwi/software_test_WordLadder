@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class LadderPage {
@@ -34,10 +35,9 @@ public class LadderPage {
         if (length > 0) {
             lb.setLadder(new ArrayList<>(wl.getLadderStack()));
         } else {
-            lb.setLadder(null);
+            List<String> emptyLadder = new ArrayList<String>();
+            lb.setLadder(emptyLadder);
         }
-
-        LOGGER.info("Result: length:"+length + ", ladder:"+lb.getLadder().toString());
 
         return lb;
     }
