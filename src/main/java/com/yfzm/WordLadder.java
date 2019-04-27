@@ -105,25 +105,6 @@ public class WordLadder {
 
     private void setDictionary() {
         dictionary = DictionaryReader.getDictioary();
-//        FileInputStream in = null;
-//        try {
-//            Resource resource = new ClassPathResource("dictionary.txt");
-//            File file = resource.getFile();
-//            in = new FileInputStream(file);
-//            InputStreamReader reader = new InputStreamReader(in);
-//            BufferedReader br = new BufferedReader(reader);
-//
-//            String line;
-//            while ((line = br.readLine()) != null) {
-//                dictionary.add(line.trim());
-//            }
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-//        InputStream in = WordLadder.class.getResourceAsStream("dictionary.txt");
-
     }
 
     private void clear() {
@@ -193,11 +174,14 @@ public class WordLadder {
         // the same length with a changed letter
         for (int i = 0; i < s.length(); ++i) {
             for (char c = 'a'; c <= 'z'; ++c) {
-                if (c == s.charAt(i)) continue;
+                if (c == s.charAt(i)) {
+                    continue;
+                }
                 changed_word = new StringBuilder(s);
                 changed_word.setCharAt(i, c);
-                if (isInDictionary(changed_word.toString()))
+                if (isInDictionary(changed_word.toString())){
                     neighbourWords.add(changed_word.toString());
+                }
             }
         }
         // added. It works when the lengths of first and last words are not equal
@@ -207,8 +191,9 @@ public class WordLadder {
                 for (char c = 'a'; c <= 'z'; ++c) {
                     changed_word = new StringBuilder(s);
                     changed_word.insert(i, c);
-                    if (isInDictionary(changed_word.toString()))
+                    if (isInDictionary(changed_word.toString())){
                         neighbourWords.add(changed_word.toString());
+                    }
                 }
             }
             // erase a letter
