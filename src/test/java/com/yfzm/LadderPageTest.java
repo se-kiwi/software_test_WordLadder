@@ -67,6 +67,8 @@ public class LadderPageTest {
     @Test
     public void func() throws Exception {
         testController("cat", "dog", 4);
+        // test is_reverse
+        testController("car", "banana", 6);
         testController("uuuu", "dddd", 0);
     }
 }
