@@ -20,6 +20,9 @@ public class WordLadderTest {
         assertTrue(wl.createLadder("ghost", "boo"));
         assertEquals(5, wl.getLadderStep());
 
+        assertTrue(wl.createLadder("boo", "ghost"));
+        assertEquals(5, wl.getLadderStep());
+
         assertTrue(wl.createLadder("marty", "keith"));
         assertEquals(7, wl.getLadderStep());
 
